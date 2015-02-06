@@ -502,6 +502,7 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+//scroll Top does only need to be calculated once, to enhance speed
   var scrollTop = document.body.scrollTop / 1250,
       items = document.querySelectorAll('.mover');
 
@@ -527,7 +528,8 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 40; i++) {
+  //reduced upper loop bound to speed up the frames per second rate
+  for (var i = 0; i < 30; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
