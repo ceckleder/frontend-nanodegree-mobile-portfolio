@@ -450,10 +450,17 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+
+    //calculating new width outside the loop
+    var allPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
+    var dx = determineDx(allPizzaContainer[0], size);
+    var newwidth = (allPizzaContainer[0].offsetWidth + dx) + 'px';
+    var pizzaContainerLength = allPizzaContainer.length;
+
+    //moved pizza container length calculation outside the loop
+    for (var i = 0; i < pizzaContainerLength; i++) {
+      // using precalculated allPizzacontainer array
+      allPizzaContainer[i].style.width = newwidth;
     }
   }
 
@@ -469,10 +476,15 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
-for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
-  pizzasDiv.appendChild(pizzaElementGenerator(i));
-}
+// added requestAnimationFrame for initial loading
+window.requestAnimationFrame(function name() {
+  for (var i = 2; i < 100; i++) {
+    var pizzasDiv = document.getElementById("randomPizzas");
+    pizzasDiv.appendChild(pizzaElementGenerator(i));
+  }
+
+})
+
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
